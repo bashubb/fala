@@ -237,6 +237,7 @@
   .film-grid { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "copy film" "chap film"; row-gap: var(--s-400); align-items: start; }
   .film-copy { align-self: end; }
   .chapters { grid-template-columns: 1fr 1fr; }
+  .chapters li:first-child { grid-column: 1 / -1; }
   .chapter { grid-template-columns: 40px minmax(0, 1fr); gap: var(--s-100); padding: var(--s-100) var(--s-200) var(--s-200); }
   .chapter .ic { width: 40px; height: 40px; }
   .chapter .txt span { font-size: 13px; line-height: 18px; }

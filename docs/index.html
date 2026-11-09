@@ -25,8 +25,8 @@
 <link rel="icon" href="assets/fav/favicon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="assets/fav/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/landing.css?v=1">
-<link rel="stylesheet" href="assets/fala.css?v=1">
+<link rel="stylesheet" href="assets/landing.css?v=2">
+<link rel="stylesheet" href="assets/fala.css?v=2">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -83,6 +83,11 @@
 </div>
 
 <main id="main">
+<section class="m-only film-intro" data-film-intro aria-label="Fala in 45 seconds: stress, restless sleep, low energy and a scattered head, each answered by a minute of guided breathing">
+  <video muted playsinline preload="auto" data-end="45.2" data-tall="assets/media/fala-film.mp4" data-tall-poster="assets/media/fala-film-poster.jpg" data-wide="assets/media/fala-film.mp4" data-wide-poster="assets/media/fala-film-poster.jpg" aria-label="The breath dot breathes and rolls along a wave; stress, sleep, energy and focus cards; the wave calms the stress gauge; 4-7-8 breathing for sleep, box breathing for focus, and a meadow that grows on the Today screen"></video>
+  <button class="film-intro-skip" type="button">Skip</button>
+  <div class="film-intro-ui" aria-hidden="true"><span class="film-intro-hint">Swipe up hard to skip</span></div>
+</section>
 <section class="hero" aria-labelledby="hero-title">
   <div class="wrap hero-grid">
     <div class="reveal m-fit">
@@ -106,6 +111,22 @@
         <div class="phase"><b>Inhale</b><span>through the nose</span></div>
         <div class="rhythm" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="pad d-only film-sec" id="film" aria-labelledby="film-title">
+  <div class="wrap film-grid">
+    <div class="reveal">
+      <span class="eyebrow">Fala in motion</span>
+      <h2 class="title" id="film-title">From a racing mind<br>to one calm minute.</h2>
+      <p class="lead">Stress, restless nights, low energy, a scattered head. See how a minute of guided breathing a day answers each one, right inside the app.</p>
+      <div class="cta-row">
+        <a class="store-badge when-live" href="https://apps.apple.com/app/id6825029130" data-store-link><img src="assets/app-store-badge.svg" alt="Download on the App Store" width="156" height="52"></a>
+      </div>
+    </div>
+    <div class="film-card reveal d1">
+      <video id="film-video" muted playsinline loop preload="none" poster="assets/media/fala-film-poster.jpg" aria-label="The breath dot breathes and rolls along a wave; stress, sleep, energy and focus cards; the wave calms the stress gauge; 4-7-8 breathing for sleep, box breathing for focus, and a meadow that grows on the Today screen"><source src="assets/media/fala-film.mp4" type="video/mp4"></video>
     </div>
   </div>
 </section>
@@ -325,11 +346,20 @@
   </div>
 </footer>
 
-<script src="assets/landing.js?v=1"></script>
+<script src="assets/landing.js?v=2"></script>
 <script>
 (() => {
   const L = window.Landing;
   const reduce = L.reduceMotion();
+
+  // The film (desktop): plays muted while it is on screen; phones open with it as the film intro instead
+  const film = document.getElementById("film-video");
+  if (L.phone) { film.querySelector("source").remove(); film.removeAttribute("poster"); film.load(); }
+  else if (reduce) { film.controls = true; film.preload = "metadata"; }
+  else new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.intersectionRatio >= 0.5) { const pr = film.play(); if (pr) pr.catch(() => { film.controls = true; }); }
+    else film.pause();
+  }), { threshold: [0, 0.5] }).observe(film);
 
   // Box breathing card: the dot walks the square (up, across, down, back), the square fills and empties
   const card = document.getElementById("breath");

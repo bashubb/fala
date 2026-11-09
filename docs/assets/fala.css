@@ -204,3 +204,13 @@
   .how-m .m-txt > * { margin-inline: 0; }
   .split-phone .iphone { --w: calc((var(--m-room) - var(--s-600)) * 0.48); }
 }
+
+/* The film: desktop shows it in a card beside its copy; phones open the page with it (film-intro) */
+.film-intro { --film-bg: #24433d; --film-fg: #edf0eb; }
+@media (orientation: landscape) { .film-intro video { object-fit: contain; } }
+.film-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-800); align-items: center; }
+.film-grid .lead { max-width: 520px; }
+.film-card { --h: min(78vh, 760px); height: var(--h); width: calc(var(--h) * 9 / 16); border-radius: 40px; overflow: hidden; background: #24433d;
+  box-shadow: 0 40px 80px -40px rgba(30, 57, 52, 0.5); }
+.film-card video { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 1000px) { .film-grid { grid-template-columns: 1fr; justify-items: center; text-align: center; } .film-sec .cta-row { justify-content: center; } }

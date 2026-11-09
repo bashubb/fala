@@ -150,7 +150,8 @@ h3 { font-size: 20px; line-height: 28px; letter-spacing: -0.01em; }
 .burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
 .burger[aria-expanded="true"] span:nth-child(2) { transform: translateY(-4px) rotate(-45deg); }
 @media (max-width: 820px) {
-  .island .links, .island .cta { display: none; }
+  .island .links { display: none; }
+  .island .cta { margin-left: auto; }           /* the download button stays in the bar on every screen */
   .island { gap: var(--s-200); }
   .burger { display: block; }
 }
@@ -327,7 +328,7 @@ h3 { font-size: 20px; line-height: 28px; letter-spacing: -0.01em; }
 .island.docked:not(.solid)::after { opacity: 1; }
 .island.docked .island-row { padding-left: 0; padding-right: 0; }
 .island.docked .island-row .links { margin-left: auto; }
-@media (max-width: 820px) { .island.docked .island-row .burger { margin-left: auto; } }
+@media (max-width: 820px) { .island.docked .island-row .cta { margin-left: auto; } }
 @media (prefers-reduced-motion: reduce) { .island:not(.solid), .island:not(.solid)::before, .island-row { transition: none; } }
 @media (max-width: 720px) { .island:not(.solid), .island:not(.solid)::before, .island-row { transition: none; } }
 .settled { perspective: none !important; }

@@ -208,9 +208,36 @@
 /* The film: desktop shows it in a card beside its copy; phones open the page with it (film-intro) */
 .film-intro { --film-bg: #24433d; --film-fg: #edf0eb; }
 @media (orientation: landscape) { .film-intro video { object-fit: contain; } }
-.film-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-800); align-items: center; }
-.film-grid .lead { max-width: 520px; }
-.film-card { --h: min(78vh, 760px); height: var(--h); width: calc(var(--h) * 9 / 16); border-radius: 40px; overflow: hidden; background: #24433d;
-  box-shadow: 0 40px 80px -40px rgba(30, 57, 52, 0.5); }
+.film-band { background: #24433d; color: #edf0eb; padding: var(--s-900) 0; }
+.film-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-areas: "copy film chap";
+  gap: var(--s-700); align-items: center; }
+.film-copy { grid-area: copy; }
+.film-band .eyebrow { color: var(--apricot); }
+.film-band .title { color: #edf0eb; }
+.film-band .lead { color: rgba(237, 240, 235, 0.72); max-width: 440px; }
+.film-card { grid-area: film; --h: min(78vh, 760px); height: var(--h); width: calc(var(--h) * 9 / 16); border-radius: 40px; overflow: hidden;
+  background: #24433d; box-shadow: 0 0 0 1px rgba(237, 240, 235, 0.1), 0 40px 80px -40px rgba(0, 0, 0, 0.45); }
 .film-card video { display: block; width: 100%; height: 100%; object-fit: cover; }
-@media (max-width: 1000px) { .film-grid { grid-template-columns: 1fr; justify-items: center; text-align: center; } .film-sec .cta-row { justify-content: center; } }
+.chapters { grid-area: chap; list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-100); }
+.chapter { position: relative; display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: var(--s-200); align-items: start; width: 100%;
+  padding: var(--s-200); border: 0; border-radius: 24px; background: transparent; color: rgba(237, 240, 235, 0.62); text-align: left;
+  font: inherit; cursor: pointer; transition: background-color 400ms var(--ease), color 400ms var(--ease); }
+@media (hover: hover) and (pointer: fine) { .chapter:hover { color: #edf0eb; } }
+.chapter.on { background: rgba(237, 240, 235, 0.07); color: #edf0eb; }
+.chapter .ic { display: inline-flex; width: 48px; height: 48px; align-items: center; justify-content: center; border-radius: 9999px;
+  background: rgba(237, 240, 235, 0.08); color: #edf0eb; transition: background-color 400ms var(--ease), color 400ms var(--ease); }
+.chapter .ic svg { width: 22px; height: 22px; }
+.chapter.on .ic { background: var(--apricot); color: var(--text); }
+.chapter .txt { display: grid; gap: var(--s-25); }
+.chapter .txt b { font-size: 18px; line-height: 24px; font-weight: 700; }
+.chapter .txt span { font-size: 14px; line-height: 20px; }
+.chapter .bar { grid-column: 2; height: 3px; border-radius: 3px; background: rgba(237, 240, 235, 0.12); overflow: hidden; }
+.chapter .bar::after { content: ""; display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: var(--apricot); }
+@media (max-width: 1180px) {
+  .film-grid { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "copy film" "chap film"; row-gap: var(--s-400); align-items: start; }
+  .film-copy { align-self: end; }
+  .chapters { grid-template-columns: 1fr 1fr; }
+  .chapter { grid-template-columns: 40px minmax(0, 1fr); gap: var(--s-100); padding: var(--s-100) var(--s-200) var(--s-200); }
+  .chapter .ic { width: 40px; height: 40px; }
+  .chapter .txt span { font-size: 13px; line-height: 18px; }
+}

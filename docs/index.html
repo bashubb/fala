@@ -25,8 +25,8 @@
 <link rel="icon" href="assets/fav/favicon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="assets/fav/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/landing.css?v=2">
-<link rel="stylesheet" href="assets/fala.css?v=2">
+<link rel="stylesheet" href="assets/landing.css?v=3">
+<link rel="stylesheet" href="assets/fala.css?v=3">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -115,19 +115,25 @@
   </div>
 </section>
 
-<section class="pad d-only film-sec" id="film" aria-labelledby="film-title">
+<section class="d-only film-band" id="film" aria-labelledby="film-title">
   <div class="wrap film-grid">
-    <div class="reveal">
+    <div class="film-copy reveal">
       <span class="eyebrow">Fala in motion</span>
       <h2 class="title" id="film-title">From a racing mind<br>to one calm minute.</h2>
-      <p class="lead">Stress, restless nights, low energy, a scattered head. See how a minute of guided breathing a day answers each one, right inside the app.</p>
+      <p class="lead">Stress, restless nights, low energy, a scattered head. A minute of guided breathing a day answers each one, right inside the app.</p>
       <div class="cta-row">
-        <a class="store-badge when-live" href="https://apps.apple.com/app/id6825029130" data-store-link><img src="assets/app-store-badge.svg" alt="Download on the App Store" width="156" height="52"></a>
+        <a class="store-badge when-live" href="https://apps.apple.com/app/id6825029130" data-store-link><img src="assets/app-store-badge-white.svg" alt="Download on the App Store" width="156" height="52"></a>
       </div>
     </div>
     <div class="film-card reveal d1">
       <video id="film-video" muted playsinline loop preload="none" poster="assets/media/fala-film-poster.jpg" aria-label="The breath dot breathes and rolls along a wave; stress, sleep, energy and focus cards; the wave calms the stress gauge; 4-7-8 breathing for sleep, box breathing for focus, and a meadow that grows on the Today screen"><source src="assets/media/fala-film.mp4" type="video/mp4"></video>
     </div>
+    <ol class="chapters reveal d2" aria-label="In the film">
+      <li><button class="chapter" type="button" data-from="11.5" data-to="18.5"><span class="ic"><svg aria-hidden="true"><use href="#i-waves"/></svg></span><span class="txt"><b>Stress</b><span>Calm in one minute, from the Lock Screen, Control Center or Siri.</span></span><i class="bar"></i></button></li>
+      <li><button class="chapter" type="button" data-from="18.5" data-to="26"><span class="ic"><svg aria-hidden="true"><use href="#i-moon"/></svg></span><span class="txt"><b>Sleep</b><span>4-7-8 breathing and seven nights of better sleep.</span></span><i class="bar"></i></button></li>
+      <li><button class="chapter" type="button" data-from="26" data-to="34.4"><span class="ic"><svg aria-hidden="true"><use href="#i-timer"/></svg></span><span class="txt"><b>Focus</b><span>Box breathing: four even sides, one steady rhythm.</span></span><i class="bar"></i></button></li>
+      <li><button class="chapter" type="button" data-from="34.4" data-to="42.2"><span class="ic"><svg aria-hidden="true"><use href="#i-sun"/></svg></span><span class="txt"><b>Energy</b><span>A little every day, and your meadow grows with you.</span></span><i class="bar"></i></button></li>
+    </ol>
   </div>
 </section>
 
@@ -346,7 +352,7 @@
   </div>
 </footer>
 
-<script src="assets/landing.js?v=2"></script>
+<script src="assets/landing.js?v=3"></script>
 <script>
 (() => {
   const L = window.Landing;
@@ -360,6 +366,24 @@
     if (e.intersectionRatio >= 0.5) { const pr = film.play(); if (pr) pr.catch(() => { film.controls = true; }); }
     else film.pause();
   }), { threshold: [0, 0.5] }).observe(film);
+  // Its chapters light up as the film reaches them, each with its own progress; a click jumps there
+  const chapters = [...document.querySelectorAll(".chapter")].map((el) => ({ el, a: +el.dataset.from, b: +el.dataset.to }));
+  const mark = () => {
+    const t = film.currentTime;
+    chapters.forEach((c) => {
+      c.el.classList.toggle("on", t >= c.a && t < c.b);
+      c.el.style.setProperty("--p", Math.min(1, Math.max(0, (t - c.a) / (c.b - c.a))).toFixed(3));
+    });
+    if (!film.paused) requestAnimationFrame(mark);
+  };
+  film.addEventListener("play", () => requestAnimationFrame(mark));
+  film.addEventListener("seeked", mark);
+  chapters.forEach((c) => c.el.addEventListener("click", () => {
+    if (L.phone) return;
+    if (film.preload === "none") film.preload = "auto";
+    film.currentTime = c.a + 0.05;
+    const pr = film.play(); if (pr) pr.catch(() => {});
+  }));
 
   // Box breathing card: the dot walks the square (up, across, down, back), the square fills and empties
   const card = document.getElementById("breath");
